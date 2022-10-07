@@ -1,0 +1,36 @@
+######## 서버 PC
+
+/home/ubuntu/CSLManager에 파일 모두 복사하기
+실행 방법 : python3 CSLManager.py 실행
+
+------------------------
+CSLManager.py - tkinter를 이용한 GUI
+fabFunction.py - fabric을 이용한 ssh 원격 명령 함수
+
+CSLManager.desktop ---> 바탕화면 바로가기 파일
+
+설치 후  반드시 마우스 우클릭 - [실행 허용] 체크
+
+실행 방법 : 위 desktop 파일로 실행(studentManager.desktop)
+
+
+-----------------------------------------------------------
+######### 클라이언트 PC
+파일 위치 /etc/ubuntu/
+sendIP.py
+clientEnv.py
+
+설치 후 
+
+학생용 컴에서 sendip.py를 백그라운드로 실행
+
+/etc/rc.local 에서
+
+sudo python3 /etc/ubuntu/sendIP.py & 
+
+추가
+
+뭐하는 코드?
+
+/home/ubuntu/.stuenv에 --> 192.168.0.xxx.ip 파일 생성
+서버로 이 ip파일을 보내줌
