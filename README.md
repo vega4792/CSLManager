@@ -45,7 +45,7 @@ reboot
 #### CSLManager.py - tkinter를 이용한 GUI
 #### fabFunction.py - fabric을 이용한 ssh 원격 명령 함수
 #### CSLManager.desktop - 바탕화면 바로가기 파일
-#### siteList.txt - 차단 목록 리스트 파일
+#### sitelist.txt - 차단 목록 리스트 파일
 <br>
 
 ### 2) 클라이언트 파일
