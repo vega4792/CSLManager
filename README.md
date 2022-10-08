@@ -1,8 +1,14 @@
 # CSL Manager for Ubuntu 22.04
 
 ## 1. 설치 방법
+### 0) 다운로드
+```
+git clone https://github.com/vega4792/CSLManager install_Manager
+```
+
 ### 1) 교사용 PC(서버)
 ```
+cd server
 bash install-server.sh
 ```
 * [x] 설치 후 바탕화면의 아이콘 **마우스 우클릭 - [실행 허용] 체크** 후 실행
@@ -10,7 +16,8 @@ bash install-server.sh
 
 ### 2) 학생용 PC(클라이언트)
 ```
-bash install-client.sh
+cd client
+sudo bash install-client.sh
 ```
 * [x] 설치 후 **재부팅 필수**
 <br>
