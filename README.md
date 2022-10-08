@@ -8,7 +8,7 @@ git clone https://github.com/vega4792/CSLManager install_Manager
 
 ### 1) 교사용 PC(서버)
 ```
-cd server
+cd install_Manager/server
 bash install-server.sh
 ```
 * [x] 설치 후 바탕화면의 아이콘 **마우스 우클릭 - [실행 허용] 체크** 후 실행
@@ -16,10 +16,23 @@ bash install-server.sh
 
 ### 2) 학생용 PC(클라이언트)
 ```
-cd client
+cd install_Manager/client
 sudo bash install-client.sh
 ```
+- 클라이언트 환경을 셋팅한다.
+```
+sudo nano /etc/ubuntu/clientEnv.py
+```
+- 서버 주소와 비번을 수정한다. localIP는 수정하지 않아도 됨.
+```
+serverIP = '192.168.0.10'      # 자신의 환경에 맞게 수정
+serverPass = 'wjdqh'
+```
+
 * [x] 설치 후 **재부팅 필수**
+```
+reboot
+```
 <br>
 
 <br>
