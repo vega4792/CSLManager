@@ -2,7 +2,7 @@
 [Desktop Entry]
 Version=0.8
 Type=Application
-Terminal=false
+Terminal=true
 Exec=python3 /home/ubuntu/CSLManager/CSLManager.py
 Name=CSL Manager 
 Comment=CSL Manager
