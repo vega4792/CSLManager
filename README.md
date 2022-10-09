@@ -16,7 +16,7 @@ bash install-server.sh
 
 ### 2) 학생용 PC(클라이언트) 원격 설치 방법
 * 이 방법을 사용하면 교사용에서 한 번에 클라이언트를 설치할 수 있다.
-* 3)의 방법은 일일이 설치하는 방법이므로 이 방법을 추천한다. 설치 방법은 <a href='https://github.com/vega4792/CSLManager/blob/main/remoteInstall/README.md'>remoteInstall 페이지</a>에 따로 작성했으니, 참고 바란다.
+* 3)의 방법은 일일이 설치하는 방법이므로 이 방법을 추천한다. 설치 방법은 <a href='https://github.com/vega4792/CSLManager/blob/main/remoteInstall'>remoteInstall 페이지</a>에 따로 작성했으니, 참고 바란다.
 
 
 ### 3) 학생용 PC(클라이언트) - 넘어가세요.
