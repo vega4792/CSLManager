@@ -6,9 +6,9 @@ mkdir /home/ubuntu/.stuenv
 
 sudo chmod 777 /home/ubuntu/Desktop/과제제출
 
-sudo cp sendIP.py /etc/ubuntu/
-sudo cp clientEnv.py /etc/ubuntu/
-sudo cp server.ip /etc/ubuntu/
+sudo mv sendIP.py /etc/ubuntu/
+sudo mv clientEnv.py /etc/ubuntu/
+sudo mv server.ip /etc/ubuntu/
 
 if grep "sendIP.py" /etc/rc.local ; then
   echo "done!"

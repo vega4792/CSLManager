@@ -14,25 +14,33 @@ bash install-server.sh
 * [x] 설치 후 바탕화면의 아이콘 **마우스 우클릭 - [실행 허용] 체크** 후 실행
 <br>
 
-### 2) 학생용 PC(클라이언트)
+### 2) 학생용 PC(클라이언트) 원격 설치 방법
+* 이 방법을 사용하면 교사용에서 한 번에 클라이언트를 설치할 수 있다.
+* 3)의 방법은 일일이 설치하는 방법이므로 이 방법을 추천한다. 설치 방법은 <a href='https://github.com/vega4792/CSLManager/blob/main/remoteInstall/README.md'>remoteInstall 페이지</a>에 따로 작성했으니, 참고 바란다.
+
+
+### 3) 학생용 PC(클라이언트) - 넘어가세요.
+* 2)의 방법으로 설치한 경우 넘어가세요. 이 방법은 일일이 수동 설치 하는 방법임.
+
 ```
 cd install_Manager/client
 sudo bash install-client.sh
 ```
-- 클라이언트 환경을 셋팅한다.
+- 클라이언트의 서버 IP와 Password를 변경한다.
 ```
-sudo nano /etc/ubuntu/clientEnv.py
+sudo nano /etc/ubuntu/server.ip
 ```
-- 서버 주소와 비번을 수정한다. localIP는 수정하지 않아도 됨.
+- 서버 주소와 비번을 수정한다.
 ```
-serverIP = '192.168.0.10'      # 자신의 환경에 맞게 수정
-serverPass = 'wjdqh'
+192.168.0.10      # 서버 IP
+wjdqh             # 서버 Password
 ```
 
 * [x] 설치 후 **재부팅 필수**
 ```
 reboot
 ```
+
 <br>
 
 <br>
@@ -53,5 +61,6 @@ reboot
 파일 위치 : /etc/ubuntu/
 ```
 #### sendIP.py - 서버로 자신의 IP를 주기적으로 보냄(백그라운드 실행)
-#### clientEnv.py - 환경 변수 파일
+#### clientEnv.py - 클라이언트 환경 변수 파일
+#### server.ip - 서버 환경 변수 파일
 <br>
