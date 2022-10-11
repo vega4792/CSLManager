@@ -118,7 +118,7 @@ sudoAll('bash install-remote.sh')
 
 while True:
     q3=input('설치가 완료되었습니다.\n클라이언트를 모두 재부팅해야 정상 작동합니다.\n\n전원 재부팅 시킬까요? [y/n] ')
-    if q3=='y' or q4=='Y':
+    if q3=='y' or q3=='Y':
         sudoAll('reboot')
         print('설치 프로그램을 종료합니다.\n교사용 바탕화면에서 CSL Manager를 실행하세요.')
         break
