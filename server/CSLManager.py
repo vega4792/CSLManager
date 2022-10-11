@@ -10,6 +10,7 @@ root.resizable(False, False)
 
 def checkClientFunc():
     ff.checkIP()
+#    ff.threadCheckIP()    # 테스트 필요
 
     label2 = Label(root,text='총 '+str(len(ff.clientList))+'명 접속 중')
     label2.place(x=350, y=10)
@@ -128,7 +129,6 @@ btnSiteRule = Button(root,text='차단 실행', command=ff.runSiteRule)
 btnSiteRule.place(x=200, y=270)
 ############################################ end of area
 
-#ff.createDirectory('/home/ubuntu/student/')
-#ff.createDirectory('/home/ubuntu/Desktop/과제제출/')
+
 checkClientFunc()
 root.mainloop()

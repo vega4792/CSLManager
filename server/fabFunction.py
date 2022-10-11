@@ -1,6 +1,9 @@
+from pydoc import cli
 import fabric
 from invoke import Responder
 import os
+import threading
+import time
 
 sudopass = Responder(pattern = r'\[sudo\] password:', response = 'wjdqh\n')
 #clientConfig = fabric.Config(overrides={'sudo': {'password': 'wjdqh', 'user':'ubuntu'}})
@@ -8,7 +11,7 @@ clientConfig = fabric.Config(overrides={'sudo': {'password': 'wjdqh'}})
 
 clientList=[]
 clientConnection = []
-clientGroup=''
+clientGroup=[]
 
 def createDirectory(folder):
     try:
@@ -23,11 +26,12 @@ def resetClient():
     global sudopass,clientList,clientConnection,clientGroup
     clientList=[]
     clientConnection=[]
-    clientGroup=''
+    clientGroup=[]
 
     folder = '/home/ubuntu/student/'
     createDirectory(folder)
     allIP = os.listdir(folder)
+    
     print('===== 클라이언트 연결 리셋 시작 =====')
     print(allIP)
     for ip in allIP:
@@ -41,12 +45,12 @@ def checkIP():
     global sudopass,clientList,clientConnection,clientGroup,clientConfig
     clientList=[]
     clientConnection=[]
-    clientGroup=''
+    clientGroup=[]
 
     folder = '/home/ubuntu/student/'
     createDirectory(folder)
     allIP = os.listdir(folder)
-    allIP.sort()
+    
     print('===== 클라이언트 확인 시작 =====')
     for ip in allIP:
         clientList.append(ip[:-3])
@@ -61,6 +65,38 @@ def checkIP():
     clientGroup = fabric.ThreadingGroup.from_connections(clientConnection)
     print('===== 클라이언트 확인 완료 =====')
     print(*clientConnection)
+
+
+## 쓰레드 타이머 - ip 확인 - 테스트 아직..
+def threadCheckIP():
+    global sudopass,clientList,clientConnection,clientGroup,clientConfig
+    tclientList=[]
+    tclientConnection=[]
+    tclientGroup=[]
+
+    folder = '/home/ubuntu/student/'
+    createDirectory(folder)
+    allIP = os.listdir(folder)
+    
+    print('===== 클라이언트 확인 시작(threading) =====')
+    for ip in allIP:
+        tclientList.append(ip[:-3])
+
+    for conIP in tclientList:
+        try:
+            tclientConnection.append(fabric.Connection(host=conIP, user='ubuntu', port=22, connect_kwargs={'password': 'wjdqh'}, config=clientConfig))
+        except:
+            print('[Error] 클라이언트 연결중 오류가 발생하였습니다! -',conIP)
+
+    tclientGroup = fabric.ThreadingGroup.from_connections(tclientConnection)
+    
+    clientList,clientConnection,clientGroup = tclientList,tclientConnection,tclientGroup
+
+    print('===== 클라이언트 확인 완료(threading) =====')
+    print(*clientConnection)
+    
+    T=threading.Timer(5, threadCheckIP)
+    T.start()
 
 
 def backupAll():
