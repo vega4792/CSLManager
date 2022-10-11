@@ -10,6 +10,8 @@ sudo mv /home/ubuntu/sendIP.py /etc/ubuntu/
 sudo mv /home/ubuntu/clientEnv.py /etc/ubuntu/
 sudo mv /home/ubuntu/server.ip /etc/ubuntu/
 
+gio set /home/ubuntu/Desktop/과제제출 metadata::nautilus-icon-position 397,119
+
 if grep "sendIP.py" /etc/rc.local ; then
   echo "done!"
 else
