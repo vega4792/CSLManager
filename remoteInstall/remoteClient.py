@@ -101,8 +101,8 @@ while True:
 serverIP = input('\n서버 PC의 IP를 정확하게 입력해주세요: ')
 serverPass = input('서버 PC의 Password를 정확하게 입력해주세요: ')
 
-os.system('echo '+serverIP+'> server.ip')
-os.system('echo '+serverPass+'>> server.ip')
+os.system('echo '+serverIP+'> /home/ubuntu/server.ip')
+os.system('echo '+serverPass+'>> /home/ubuntu/server.ip')
 
 
 print('##### 설치를 시작합니다. #####')
