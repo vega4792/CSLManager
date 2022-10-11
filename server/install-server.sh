@@ -15,6 +15,9 @@ cp CSLManager.desktop /home/ubuntu/Desktop/
 sudo chmod +x /home/ubuntu/Desktop/CSLManager.desktop
 sudo chmod 777 /home/ubuntu/Desktop/과제제출
 
+gio set /home/ubuntu/Desktop/과제제출 metadata::nautilus-icon-position 397,119
+gio set /home/ubuntu/Desktop/CSLManager.desktop metadata::nautilus-icon-position 265,119
+
 echo ""
 echo ""
 echo "CSL Manager 설치 완료!"
