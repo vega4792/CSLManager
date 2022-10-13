@@ -1,134 +1,128 @@
-from tkinter import *
-from tkinter import filedialog
-import fabFunction as ff
 import os
-
-root = Tk()
-root.title('CSL Manager for Ubuntu Ver.0.8')
-root.geometry('550x480')
-root.resizable(False, False)
-
-def checkClientFunc():
-    ff.checkIP()
-#    ff.threadCheckIP()    # 테스트 필요
-
-    label2 = Label(root,text='총 '+str(len(ff.clientList))+'명 접속 중')
-    label2.place(x=350, y=10)
-
-    listbox1.delete(first=0, last=END)
-    for idx,client in enumerate(ff.clientList):
-        listbox1.insert(idx, client)
-
-btn1 = Button(root,  padx=5, pady=5,text='세션초기화',command=ff.resetClient)
-btn1.place(x=10, y=10)
-
-btn2 = Button(root, padx=5, pady=5,text='접속확인',command=checkClientFunc)
-btn2.place(x=110, y=10)
-
-btn3 = Button(root, padx=5, pady=5, text='현재 상태를 백업',command=ff.backupAll)
-btn3.place(x=10, y=50)
-
-btn4 = Button(root, padx=5, pady=5, text='저장된 상태로 복구',command=ff.restoreAll)
-btn4.place(x=140, y=50)
-
-listbox1 = Listbox(root, selectmode='extended', height=0)
-listbox1.place(x=370,y=40)
+import tkinter as tk
+import tkinter.ttk as ttk
+import fabFunction as ff
 
 
-############### remote command
-label1 = Label(root,text='원격 명령:')
-label1.place(x=10, y=90)
+class CSLManagerApp:
+    def __init__(self, master=None):
+        self.master = master
+        self.master.title("CSL Manager for Ubuntu Ver.0.8")
+        self.master.geometry('560x480')
+        self.master.resizable(False, False)
+        self.filename = ''
 
-entry1 = Entry(root,width=25)
-entry1.place(x=70, y=90)
+        self.btn1 = tk.Button(self.master, padx=5, pady=5, text='세션초기화', command=ff.resetClient)
+        self.btn1.place(x=10, y=10)
 
-def btnRunFunc():
-    cmd = entry1.get()
-    print('run:',cmd)
-    ff.runAll(cmd)
-    entry1.delete(0,END)
+        self.btn2 = tk.Button(self.master, padx=5, pady=5, text='접속확인', command=self.checkClientFunc)
+        self.btn2.place(x=110, y=10)
 
-def btnSudoFunc():
-    cmd = entry1.get()
-    print('sudo:', cmd)
-    ff.sudoAll(cmd)
-    entry1.delete(0,END)
+        self.btn3 = tk.Button(self.master, padx=5, pady=5, text='현재 상태를 백업', command=ff.backupAll)
+        self.btn3.place(x=10, y=50)
 
-btnRun = Button(root,text='실행', command=btnRunFunc)
-btnRun.place(x=290, y=90)
+        self.btn4 = tk.Button(self.master, padx=5, pady=5, text='저장된 상태로 복구', command=ff.restoreAll)
+        self.btn4.place(x=140, y=50)
 
-btnSudo = Button(root,text='sudo', command=btnSudoFunc)
-btnSudo.place(x=290, y=60)
-############################################ end of area
+        self.listbox1 = tk.Listbox(self.master, selectmode='extended', height=0)
+        self.listbox1.place(x=370, y=40)
+
+        self.label1 = tk.Label(self.master, text='원격 명령:')
+        self.label1.place(x=10, y=90)
+
+        self.entry1 = tk.Entry(self.master, width=25)
+        self.entry1.place(x=70, y=90)
+
+        self.btnRun = tk.Button(self.master, text='실행', command=self.btnRunFunc)
+        self.btnRun.place(x=290, y=90)
+
+        self.btnSudo = tk.Button(self.master, text='sudo', command=self.btnSudoFunc)
+        self.btnSudo.place(x=290, y=60)
+
+        self.label2 = tk.Label(self.master, text='파일 전송:')
+        self.label2.place(x=10, y=140)
+
+        self.entry2 = tk.Entry(self.master, width=25)
+        self.entry2.place(x=70, y=140)
+
+        self.btnFile = tk.Button(self.master, text='파일 선택', command=self.selectFileFunc)
+        self.btnFile.place(x=290, y=140)
+
+        self.btnSelTrans = tk.Button(self.master, text='선택 전송', command=self.transferSelFunc)
+        self.btnSelTrans.place(x=100, y=170)
+
+        self.btnAllTrans = tk.Button(self.master, text='모두 전송', command=self.transferAllFunc)
+        self.btnAllTrans.place(x=200, y=170)
+
+        self.label3 = tk.Label(self.master, text='과제 회수:')
+        self.label3.place(x=10, y=220)
+
+        btnGetSel = tk.Button(self.master, text='선택 회수', command=self.getFileSelFunc)
+        btnGetSel.place(x=100, y=220)
+
+        self.btnGetAll = tk.Button(self.master, text='모두 회수', command=ff.getFileAll)
+        self.btnGetAll.place(x=200, y=220)
+
+        self.label4 = tk.Label(self.master, text='사이트 차단:')
+        self.label4.place(x=10, y=270)
+
+        self.btnSiteList = tk.Button(self.master, text='목록 열기', command=self.siteListFunc)
+        self.btnSiteList.place(x=100, y=270)
+
+        self.btnSiteRule = tk.Button(self.master, text='차단 실행', command=ff.runSiteRule)
+        self.btnSiteRule.place(x=200, y=270)
+
+    def checkClientFunc(self):
+        ff.checkIP()
+        #    ff.threadCheckIP()    # 테스트 필요
+
+        label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
+        label2.place(x=350, y=10)
+
+        self.listbox1.delete(first=0, last=tk.END)
+        for idx, client in enumerate(ff.clientList):
+            self.listbox1.insert(idx, client)
+
+    def btnRunFunc(self):
+        cmd = self.entry1.get()
+        print('run:', cmd)
+        ff.runAll(cmd)
+        self.entry1.delete(0, tk.END)
+
+    def btnSudoFunc(self):
+        cmd = self.entry1.get()
+        print('sudo:', cmd)
+        ff.sudoAll(cmd)
+        self.entry1.delete(0, tk.END)
+
+    def selectFileFunc(self):
+        self.filename = tk.filedialog.askopenfilename(initialdir='/home/ubuntu/', title='파일 선택')
+        print(self.filename)
+        self.entry2.delete(0, tk.END)
+        self.entry2.insert(0, self.filename)
+
+    def transferSelFunc(self):
+        for ip in self.listbox1.curselection():
+            idx = ff.clientList.index(self.listbox1.get(ip))
+            ff.transferSel(self.filename, ff.clientConnection[idx])
+
+    def transferAllFunc(self):
+        ff.transferAll(self.filename)
+
+    def getFileSelFunc(self):
+        for ip in self.listbox1.curselection():
+            idx = ff.clientList.index(self.listbox1.get(ip))
+            ff.getFileSel(ff.clientList[ip], ff.clientConnection[idx])
+
+    def siteListFunc(self):
+        os.system('gedit /home/ubuntu/CSLManager/sitelist.txt')
+
+    def run(self):
+        self.checkClientFunc()
+        self.master.mainloop()
 
 
-########### file transfer
-label2 = Label(root,text='파일 전송:')
-label2.place(x=10, y=140)
-
-entry2 = Entry(root, width=25)
-entry2.place(x=70, y=140)
-
-filename=''
-
-def selectFileFunc():
-    global filename
-    filename = filedialog.askopenfilename(initialdir='/home/ubuntu/', title='파일 선택')
-    print(filename)
-    entry2.delete(0,END)
-    entry2.insert(0,filename)
-
-def transferSelFunc():
-    global filename
-    for ip in listbox1.curselection():
-        idx = ff.clientList.index(listbox1.get(ip))
-        ff.transferSel(filename, ff.clientConnection[idx])
-
-def transferAllFunc():
-    global filename
-    ff.transferAll(filename)
-
-btnFile = Button(root,text='파일 선택', command=selectFileFunc)
-btnFile.place(x=290, y=140)
-
-btnSelTrans = Button(root,text='선택 전송', command=transferSelFunc)
-btnSelTrans.place(x=100, y=170)
-
-btnAllTrans = Button(root,text='모두 전송', command=transferAllFunc)
-btnAllTrans.place(x=200, y=170)
-############################################ end of area
-
-############################################ get file
-def getFileSelFunc():
-    for ip in listbox1.curselection():
-        idx = ff.clientList.index(listbox1.get(ip))
-        ff.getFileSel(ff.clientList[ip], ff.clientConnection[idx])
-
-label3 = Label(root,text='과제 회수:')
-label3.place(x=10, y=220)
-
-btnGetSel = Button(root,text='선택 회수', command=getFileSelFunc)
-btnGetSel.place(x=100, y=220)
-
-btnGetAll = Button(root,text='모두 회수', command=ff.getFileAll)
-btnGetAll.place(x=200, y=220)
-############################################ end of area
-
-
-############## 사이트 차단 정책 추가
-label4 = Label(root,text='사이트 차단:')
-label4.place(x=10, y=270)
-
-def siteListFunc():
-    os.system('gedit /home/ubuntu/CSLManager/sitelist.txt')
-
-btnSiteList = Button(root,text='목록 열기', command=siteListFunc)
-btnSiteList.place(x=100, y=270)
-
-btnSiteRule = Button(root,text='차단 실행', command=ff.runSiteRule)
-btnSiteRule.place(x=200, y=270)
-############################################ end of area
-
-
-checkClientFunc()
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = CSLManagerApp(root)
+    app.run()
