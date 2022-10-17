@@ -1,9 +1,7 @@
 import fabric
-from invoke import Responder
 import os
-import threading
+import time
 
-sudopass = Responder(pattern = r'\[sudo\] password:', response = 'wjdqh\n')
 clientConfig = fabric.Config(overrides = { 'run': {'in_stream': False }, 'sudo': {'password': 'wjdqh'} } )
 
 clientList=[]
@@ -20,49 +18,39 @@ def createDirectory(folder):
 
 # 클라이언트 목록 지움
 def resetClient():
-    global sudopass,clientList,clientConnection,clientGroup
-    clientList=[]
-    clientConnection=[]
-    clientGroup=[]
+    global clientList,clientConnection,clientGroup
+    clientList, clientConnection, clientGroup = [], [], []
 
     folder = '/home/ubuntu/student/'
     createDirectory(folder)
-    allIP = os.listdir(folder)
     
     print('===== 클라이언트 연결 리셋 시작 =====')
-    for ip in allIP:
-        os.remove(folder+ip)
+    for ipFile in os.listdir(folder):
+        os.remove(folder+ipFile)
     print('===== 클라이언트 연결 리셋 완료 =====')
-    print('>>>>> 5초 마다 갱신 됩니다.접속 확인 버튼을 눌러보세요! <<<<<')
 
 
 # 클라이언트 체크 (/home/ubuntu/student 에 목록 생성: 클라이언트에서 자기 ip 보내줌)
 def checkIP():
-    global sudopass,clientList,clientConnection,clientGroup,clientConfig
-    tclientList=[]
-    tclientConnection=[]
-    tclientGroup=[]
+    global clientList,clientConnection,clientGroup,clientConfig
+    tclientList, tclientConnection, tclientGroup = [], [], []
 
     folder = '/home/ubuntu/student/'
     createDirectory(folder)
     allIP = os.listdir(folder)
     
-    # 파일 생성 시간(작업 중...)
-    fileinfo = []
-    for filename in os.listdir(folder):
-        # getctime: 입력받은 경로에 대한 생성 시간을 리턴
-        fileGenTime = os.path.getctime(folder + filename)
-        fileinfo.append( (filename, int(fileGenTime)) )
-
-    print(fileinfo)
-        
-    # 가장 생성시각이 큰(가장 최근인) 파일을 리턴 
-    #most_recent_file = max(each_file_path_and_gen_time, key=lambda x: x[1])[0]
-    
-    print('===== 클라이언트 확인 시작(threading) =====')
+    # 클라이언트와 최근 7초 이내 통신이 있었는지 확인.
+    now = int(time.time())
     for ip in allIP:
-        tclientList.append(ip[:-3])
-
+        fileGenTime = int(os.path.getctime(folder + ip))
+        diff = now - fileGenTime
+        #print(diff)
+        if diff<=7:
+            tclientList.append(ip[:-3])
+        else:
+            os.remove(folder+ip)
+                
+                
     for conIP in tclientList:
         try:
             tclientConnection.append(fabric.Connection(host=conIP, user='ubuntu', port=22, connect_kwargs={'password': 'wjdqh'}, config=clientConfig))
@@ -71,14 +59,12 @@ def checkIP():
 
     tclientGroup = fabric.ThreadingGroup.from_connections(tclientConnection)
     
-    clientList,clientConnection,clientGroup = tclientList,tclientConnection,tclientGroup
-
-    print('===== 클라이언트 확인 완료(threading) =====')
+    clientList, clientConnection, clientGroup = tclientList, tclientConnection, tclientGroup
     print(*clientConnection)
     
     
 def backupAll():
-    global sudopass,clientList,clientConnection,clientGroup
+    global clientGroup
     print('===== 모든 클라이언트 백업 시작 =====')
     try:
         clientGroup.sudo('mv /etc/ubuntu/reset.tar.gz /etc/ubuntu/reset_old.tar.gz')
@@ -93,7 +79,7 @@ def restoreAll():  # 필요성 검토, 미구현
 
 
 def runAll(cmd):
-    global sudopass,clientList,clientConnection,clientGroup
+    global clientGroup
     print('===== 원격 명령어 전송 시작 =====')
     try:
         clientGroup.run(cmd)
@@ -103,7 +89,7 @@ def runAll(cmd):
 
 
 def sudoAll(cmd):
-    global sudopass,clientList,clientConnection,clientGroup
+    global clientGroup
     print('===== 원격 명령어(sudo) 전송 시작 =====')
     try:
         clientGroup.sudo(cmd)
@@ -113,7 +99,7 @@ def sudoAll(cmd):
 
 
 def transferAll(filename):
-    global sudopass,clientList,clientConnection,clientGroup
+    global clientGroup
     foldername = '/home/ubuntu/Desktop/과제제출/'
     print('===== 모든 클라이언트 파일 전송 시작 =====')
     try:
@@ -124,7 +110,6 @@ def transferAll(filename):
 
 
 def transferSel(filename, client):
-    global sudopass,clientList,clientConnection,clientGroup
     foldername = '/home/ubuntu/Desktop/과제제출/'
 
     print('===== 선택된 클라이언트 파일 전송 시작 =====')
@@ -158,7 +143,7 @@ def getFileSel(ip, client):
 
 
 def getFileAll():
-    global sudopass,clientList,clientConnection,clientGroup
+    global clientList,clientConnection
     print('===== 모든 클라이언트 파일 회수 시작 =====')
     foldername = '/home/ubuntu/Desktop/과제제출/'
 
@@ -172,7 +157,7 @@ def getFileAll():
                     if file!='':
                         client.get(foldername+file, foldername+clientList[idx]+'_'+file)
                     else:
-                        client.get(foldername+file, foldername+clientList[idx]+'_파일없음(미제출)')                    
+                        client.get(foldername+file, foldername+clientList[idx]+'_파일없음(미제출)')
                 except:
                     pass
         except:
@@ -182,7 +167,7 @@ def getFileAll():
 
 
 def runSiteRule():
-    global sudopass,clientList,clientConnection,clientGroup
+    global clientList,clientConnection,clientGroup
     print('===== 사이트 정책 초기화 =====')
     clientGroup.sudo('iptables -F && iptables -P OUTPUT ACCEPT')
 

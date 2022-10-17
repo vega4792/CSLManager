@@ -74,7 +74,7 @@ class CSLManagerApp:
         self.btnSiteRule.place(x=200, y=270)
 
     def checkClientFunc(self):
-        ff.checkIP()    # 테스트 필요
+        ff.checkIP()
 
         label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
         label2.place(x=350, y=10)
@@ -83,8 +83,9 @@ class CSLManagerApp:
         for idx, client in enumerate(ff.clientList):
             self.listbox1.insert(idx, client)
         
-        #T = threading.Timer(5, self.checkClientFunc)
-        #T.start()
+        # 5초마다 쓰레드 실행
+        T = threading.Timer(5, self.checkClientFunc)
+        T.start()
 
     def btnRunFunc(self):
         cmd = self.entry1.get()
