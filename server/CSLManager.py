@@ -83,7 +83,7 @@ class CSLManagerApp:
         for idx, client in enumerate(ff.clientList):
             self.listbox1.insert(idx, client)
         
-        #T=threading.Timer(5, ff.checkIP)
+        #T = threading.Timer(5, self.checkClientFunc)
         #T.start()
 
     def btnRunFunc(self):

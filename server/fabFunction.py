@@ -4,7 +4,6 @@ import os
 import threading
 
 sudopass = Responder(pattern = r'\[sudo\] password:', response = 'wjdqh\n')
-#clientConfig = fabric.Config(overrides={'sudo': {'password': 'wjdqh'}})
 clientConfig = fabric.Config(overrides = { 'run': {'in_stream': False }, 'sudo': {'password': 'wjdqh'} } )
 
 clientList=[]
@@ -48,6 +47,18 @@ def checkIP():
     createDirectory(folder)
     allIP = os.listdir(folder)
     
+    # 파일 생성 시간(작업 중...)
+    fileinfo = []
+    for filename in os.listdir(folder):
+        # getctime: 입력받은 경로에 대한 생성 시간을 리턴
+        fileGenTime = os.path.getctime(folder + filename)
+        fileinfo.append( (filename, int(fileGenTime)) )
+
+    print(fileinfo)
+        
+    # 가장 생성시각이 큰(가장 최근인) 파일을 리턴 
+    #most_recent_file = max(each_file_path_and_gen_time, key=lambda x: x[1])[0]
+    
     print('===== 클라이언트 확인 시작(threading) =====')
     for ip in allIP:
         tclientList.append(ip[:-3])
@@ -65,9 +76,7 @@ def checkIP():
     print('===== 클라이언트 확인 완료(threading) =====')
     print(*clientConnection)
     
-
-
-
+    
 def backupAll():
     global sudopass,clientList,clientConnection,clientGroup
     print('===== 모든 클라이언트 백업 시작 =====')
