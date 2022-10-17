@@ -1,8 +1,9 @@
 import os
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import filedialog
 import fabFunction as ff
-
+import threading
 
 class CSLManagerApp:
     def __init__(self, master=None):
@@ -73,8 +74,7 @@ class CSLManagerApp:
         self.btnSiteRule.place(x=200, y=270)
 
     def checkClientFunc(self):
-        ff.checkIP()
-        #    ff.threadCheckIP()    # 테스트 필요
+        ff.checkIP()    # 테스트 필요
 
         label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
         label2.place(x=350, y=10)
@@ -82,6 +82,9 @@ class CSLManagerApp:
         self.listbox1.delete(first=0, last=tk.END)
         for idx, client in enumerate(ff.clientList):
             self.listbox1.insert(idx, client)
+        
+        #T=threading.Timer(5, ff.checkIP)
+        #T.start()
 
     def btnRunFunc(self):
         cmd = self.entry1.get()
@@ -96,7 +99,7 @@ class CSLManagerApp:
         self.entry1.delete(0, tk.END)
 
     def selectFileFunc(self):
-        self.filename = tk.filedialog.askopenfilename(initialdir='/home/ubuntu/', title='파일 선택')
+        self.filename = filedialog.askopenfilename(initialdir='/home/ubuntu/', title='파일 선택')
         print(self.filename)
         self.entry2.delete(0, tk.END)
         self.entry2.insert(0, self.filename)
