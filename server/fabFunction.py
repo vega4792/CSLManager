@@ -173,7 +173,7 @@ def getFileAll():
 def runSiteRule():
     global clientList,clientConnection,clientGroup
     print('===== 사이트 정책 초기화 =====')
-    clientGroup.sudo('iptables -F && iptables -P OUTPUT ACCEPT')
+    #clientGroup.sudo('iptables -F && iptables -P OUTPUT ACCEPT')
 
     print('===== 사이트 차단 정책 적용 시작 =====')
     f=open('/home/ubuntu/CSLManager/sitelist.txt')
@@ -194,3 +194,13 @@ def runSiteRule():
                 print('[Error] iptables 명령어(sudo) 실행 중 문제가 발생하였습니다!')
 
     print('===== 사이트 차단 정책 적용 완료 =====')
+
+
+
+'''
+sudo iptables -w -I OUTPUT  -p all -m string --hex-string "youtube|03|com" --algo bm -j YOUTUBE
+sudo iptables -w -I FORWARD -p all -m string --hex-string "youtube|03|com" --algo bm -j YOUTUBE
+
+sudo iptables -w -I OUTPUT  -p all -m string --hex-string "googlevideo|03|com" --algo bm -j YOUTUBE
+sudo iptables -w -I FORWARD -p all -m string --hex-string "googlevideo|03|com" --algo bm -j YOUTUBE
+'''
