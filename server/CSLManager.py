@@ -74,14 +74,15 @@ class CSLManagerApp:
         self.btnSiteRule.place(x=200, y=270)
 
     def checkClientFunc(self):
-        ff.checkIP()
-
-        label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
-        label2.place(x=350, y=10)
-
-        self.listbox1.delete(first=0, last=tk.END)
-        for idx, client in enumerate(ff.clientList):
-            self.listbox1.insert(idx, client)
+        stat = ff.checkIP()
+        
+        if stat:
+            label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
+            label2.place(x=350, y=10)
+       
+            self.listbox1.delete(first=0, last=tk.END)
+            for idx, client in enumerate(ff.clientList):
+                self.listbox1.insert(idx, client)
         
         # 5초마다 쓰레드 실행
         T = threading.Timer(5, self.checkClientFunc)

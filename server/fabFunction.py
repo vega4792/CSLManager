@@ -4,9 +4,8 @@ import time
 
 clientConfig = fabric.Config(overrides = { 'run': {'in_stream': False }, 'sudo': {'password': 'wjdqh'} } )
 
-clientList=[]
-clientConnection = []
-clientGroup=[]
+clientList, clientConnection, clientGroup = [], [], []
+tclientList, tclientConnection, tclientGroup = [], [], []
 
 def createDirectory(folder):
     try:
@@ -33,6 +32,8 @@ def resetClient():
 # 클라이언트 체크 (/home/ubuntu/student 에 목록 생성: 클라이언트에서 자기 ip 보내줌)
 def checkIP():
     global clientList,clientConnection,clientGroup,clientConfig
+    global tclientList,tclientConnection,tclientGroup
+    
     tclientList, tclientConnection, tclientGroup = [], [], []
 
     folder = '/home/ubuntu/student/'
@@ -44,12 +45,14 @@ def checkIP():
     for ip in allIP:
         fileGenTime = int(os.path.getctime(folder + ip))
         diff = now - fileGenTime
-        #print(diff)
+
         if diff<=7:
             tclientList.append(ip[:-3])
         else:
             os.remove(folder+ip)
-                
+
+    if tclientList == clientList:
+        return False
                 
     for conIP in tclientList:
         try:
@@ -60,8 +63,9 @@ def checkIP():
     tclientGroup = fabric.ThreadingGroup.from_connections(tclientConnection)
     
     clientList, clientConnection, clientGroup = tclientList, tclientConnection, tclientGroup
-    print(*clientConnection)
+    #print(*clientConnection)
     
+    return True
     
 def backupAll():
     global clientGroup
