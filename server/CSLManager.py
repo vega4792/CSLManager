@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog
+from tkinter.messagebox import askyesno
 import fabFunction as ff
 import threading
 
@@ -16,10 +17,10 @@ class CSLManagerApp:
         self.btn1 = tk.Button(self.master, padx=5, pady=5, text='세션초기화', command=ff.resetClient)
         self.btn1.place(x=10, y=10)
 
-        self.btn2 = tk.Button(self.master, padx=5, pady=5, text='접속확인', command=self.checkClientFunc)
+        self.btn2 = tk.Button(self.master, padx=5, pady=5, text='명령어 사전', command=self.cmdDicFunc)
         self.btn2.place(x=110, y=10)
 
-        self.btn3 = tk.Button(self.master, padx=5, pady=5, text='현재 상태를 백업', command=ff.backupAll)
+        self.btn3 = tk.Button(self.master, padx=5, pady=5, text='현재 상태를 백업', command=self.backupAllFunc)
         self.btn3.place(x=10, y=50)
 
         self.btn4 = tk.Button(self.master, padx=5, pady=5, text='저장된 상태로 복구', command=ff.restoreAll)
@@ -73,6 +74,10 @@ class CSLManagerApp:
         self.btnSiteRule = tk.Button(self.master, text='차단 실행', command=ff.runSiteRule)
         self.btnSiteRule.place(x=200, y=270)
 
+    def confirm(self,msg):
+        ans = askyesno(title='확인', message=msg)
+        return ans
+        
     def checkClientFunc(self):
         stat = ff.checkIP()
         
@@ -87,6 +92,12 @@ class CSLManagerApp:
         # 5초마다 쓰레드 실행
         T = threading.Timer(5, self.checkClientFunc)
         T.start()
+
+    def backupAllFunc(self):
+        answer = self.confirm(msg='전체 백업을 실행하시겠습니까?')
+        if answer:
+            ff.backupAll()
+        
 
     def btnRunFunc(self):
         cmd = self.entry1.get()
@@ -122,6 +133,9 @@ class CSLManagerApp:
     def siteListFunc(self):
         os.system('gedit /home/ubuntu/CSLManager/sitelist.txt')
 
+    def cmdDicFunc(self):
+        os.system('gedit /home/ubuntu/CSLManager/command.txt')
+        
     def run(self):
         self.checkClientFunc()
         self.master.mainloop()
