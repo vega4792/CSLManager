@@ -10,6 +10,7 @@ mkdir /home/ubuntu/CSLManager
 cp fabFunction.py /home/ubuntu/CSLManager/
 cp CSLManager.py /home/ubuntu/CSLManager/
 cp sitelist.txt /home/ubuntu/CSLManager/
+cp command.txt /home/ubuntu/CSLManager/
 cp CSLManager.desktop /home/ubuntu/Desktop/
 
 sudo chmod +x /home/ubuntu/Desktop/CSLManager.desktop
