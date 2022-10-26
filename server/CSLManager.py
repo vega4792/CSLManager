@@ -14,7 +14,7 @@ class CSLManagerApp:
         self.master.resizable(False, False)
         self.filename = ''
 
-        self.btn1 = tk.Button(self.master, padx=5, pady=5, text='세션초기화', command=ff.resetClient)
+        self.btn1 = tk.Button(self.master, padx=5, pady=5, text='세션초기화', command=self.resetClientFunc)
         self.btn1.place(x=10, y=10)
 
         self.btn2 = tk.Button(self.master, padx=5, pady=5, text='명령어 사전', command=self.cmdDicFunc)
@@ -77,7 +77,16 @@ class CSLManagerApp:
     def confirm(self,msg):
         ans = askyesno(title='확인', message=msg)
         return ans
-        
+
+    def resetClientFunc(self):
+        ff.resetClient()
+        label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
+        label2.place(x=350, y=10)
+       
+        self.listbox1.delete(first=0, last=tk.END)
+        for idx, client in enumerate(ff.clientList):
+            self.listbox1.insert(idx, client)
+                
     def checkClientFunc(self):
         stat = ff.checkIP()
         
