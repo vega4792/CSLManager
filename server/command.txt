@@ -1,0 +1,11 @@
+# 관리자 명령(sudo)
+# 재부팅
+reboot
+
+# 전원 off
+shutdown -h now
+
+
+# 일반 명령
+
+
