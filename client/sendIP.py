@@ -31,9 +31,9 @@ except:
 while True:
 	try:
 		result=myPC.run('hostname -I')
-		localIP = result.stdout.strip()
-		myPC.run('echo '+localIP+' > '+env_folder+localIP+'.ip')
-		serverPC.put(env_folder+localIP+'.ip', '/home/ubuntu/student')
+		myIP = result.stdout.strip().split(' ')
+		myPC.run('echo '+myIP[0]+' > '+env_folder+myIP[0]+'.ip')
+		serverPC.put(env_folder+myIP[0]+'.ip', '/home/ubuntu/student')
 	except:
 		pass
 
