@@ -80,9 +80,15 @@ def backupAll():
     print('===== 모든 클라이언트 백업 완료 =====')
 
 
-def restoreAll():  # 필요성 검토, 미구현
-    return
-
+def powerOff():  
+    global clientGroup
+    print('===== 전체 PC OFF 시작 =====')
+    try:
+        clientGroup.sudo('shutdown -h now')
+    except:
+        pass
+    print('===== 전체 PC OFF 완료 =====')
+    
 
 def runAll(cmd):
     global clientGroup

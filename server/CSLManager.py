@@ -23,7 +23,7 @@ class CSLManagerApp:
         self.btn3 = tk.Button(self.master, padx=5, pady=5, text='현재 상태를 백업', command=self.backupAllFunc)
         self.btn3.place(x=10, y=50)
 
-        self.btn4 = tk.Button(self.master, padx=5, pady=5, text='저장된 상태로 복구', command=ff.restoreAll)
+        self.btn4 = tk.Button(self.master, padx=5, pady=5, text='PC 종료', command=self.powerOffFunc)
         self.btn4.place(x=140, y=50)
 
         self.listbox1 = tk.Listbox(self.master, selectmode='extended', height=0)
@@ -103,11 +103,15 @@ class CSLManagerApp:
         T.start()
 
     def backupAllFunc(self):
-        answer = self.confirm(msg='전체 백업을 실행하시겠습니까?')
+        answer = self.confirm(msg='클라이언트 전체 백업을 실행하시겠습니까?')
         if answer:
             ff.backupAll()
         
-
+    def powerOffFunc(self):
+        answer = self.confirm(msg='클라이언트 PC 전체를 끄시겠습니까?')
+        if answer:
+            ff.powerOff()        
+        
     def btnRunFunc(self):
         cmd = self.entry1.get()
         print('run:', cmd)
