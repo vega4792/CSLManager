@@ -111,6 +111,7 @@ print('클라이언트로 파일 전송 중...')
 transferAll('clientEnv.py')
 transferAll('sendIP.py')
 transferAll('server.ip')
+transferAll('restart.sh')
 transferAll('install-remote.sh')
 
 print('클라이언트 설치 진행 중...')
