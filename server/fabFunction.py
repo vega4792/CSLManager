@@ -39,8 +39,7 @@ def checkIP():
     folder = '/home/ubuntu/student/'
     createDirectory(folder)
     allIP = os.listdir(folder)
-    allIP.sort(key=lambda x: int(x[x.rfind('.')+1:]))
-
+    
     # 클라이언트와 최근 7초 이내 통신이 있었는지 확인.
     now = int(time.time())
     for ip in allIP:
@@ -52,6 +51,8 @@ def checkIP():
         else:
             os.remove(folder+ip)
 
+    tclientList.sort(key=lambda x: int(x[x.rfind('.')+1:]))
+    
     if tclientList == clientList:
         return False
                 
