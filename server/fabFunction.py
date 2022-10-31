@@ -73,11 +73,15 @@ def backupAll():
     global clientGroup
     print('===== 모든 클라이언트 백업 시작 =====')
     try:
-    #    clientGroup.sudo('mv /etc/ubuntu/reset.tar.gz /etc/ubuntu/reset_old.tar.gz')
-    #    clientGroup.sudo('tar cvzpf /etc/ubuntu/reset.tar.gz /home/ubuntu/')
-        pass
+        clientGroup.sudo('mv /etc/ubuntu/reset.tar /etc/ubuntu/reset_old.tar')
     except:
-        print('[Error] 백업 중 문제가 발생하였습니다!')
+        print('[Warning] 기존 백업 파일이 없습니다!')
+
+    try:
+        clientGroup.sudo('tar cvpf /etc/ubuntu/reset.tar /home/ubuntu/')
+    except:
+        print('[Error] 백업 중 문제가 발생하였습니다!')        
+
     print('===== 모든 클라이언트 백업 완료 =====')
 
 
