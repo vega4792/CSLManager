@@ -68,7 +68,22 @@ def checkIP():
     #print(*clientConnection)
     
     return True
+
+
+def backupSel(client):
+    print('===== 선택된 클라이언트 백업 시작 =====')
+    try:
+        client.sudo('mv /etc/ubuntu/reset.tar /etc/ubuntu/reset_old.tar')
+    except:
+        print('[Warning] 기존 백업 파일이 없습니다!')
+
+    try:
+        client.sudo('tar cvpf /etc/ubuntu/reset.tar /home/ubuntu/')
+    except:
+        print('[Error] 백업 중 문제가 발생하였습니다!')        
+    print('===== 선택된 클라이언트 백업 완료 =====')    
     
+        
 def backupAll():
     global clientGroup
     print('===== 모든 클라이언트 백업 시작 =====')

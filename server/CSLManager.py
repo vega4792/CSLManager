@@ -5,6 +5,7 @@ from tkinter import filedialog
 from tkinter.messagebox import askyesno
 import fabFunction as ff
 import threading
+import sys
 
 class CSLManagerApp:
     def __init__(self, master=None):
@@ -17,14 +18,20 @@ class CSLManagerApp:
         self.btn1 = tk.Button(self.master, padx=5, pady=5, text='세션초기화', command=self.resetClientFunc)
         self.btn1.place(x=10, y=10)
 
-        self.btn2 = tk.Button(self.master, padx=5, pady=5, text='명령어 사전', command=self.cmdDicFunc)
-        self.btn2.place(x=110, y=10)
-
-        self.btn3 = tk.Button(self.master, padx=5, pady=5, text='현재 상태를 백업', command=self.backupAllFunc)
-        self.btn3.place(x=10, y=50)
-
         self.btn4 = tk.Button(self.master, padx=5, pady=5, text='PC 종료', command=self.powerOffFunc)
-        self.btn4.place(x=140, y=50)
+        self.btn4.place(x=100, y=10)
+        
+        self.btn2 = tk.Button(self.master, padx=5, pady=5, text='명령어 사전', command=self.cmdDicFunc)
+        self.btn2.place(x=180, y=10)
+
+        self.label5 = tk.Label(self.master, text='PC 백업:')
+        self.label5.place(x=10, y=50)
+                        
+        self.btn3 = tk.Button(self.master, padx=5, pady=5, text='선택 백업', command=self.backupSelFunc)
+        self.btn3.place(x=100, y=50)
+        
+        self.btn3 = tk.Button(self.master, padx=5, pady=5, text='모두 백업', command=self.backupAllFunc)
+        self.btn3.place(x=200, y=50)        
 
         self.listbox1 = tk.Listbox(self.master, selectmode='extended', height=0)
         self.listbox1.place(x=370, y=40)
@@ -81,7 +88,7 @@ class CSLManagerApp:
     def resetClientFunc(self):
         ff.resetClient()
         label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
-        label2.place(x=350, y=10)
+        label2.place(x=400, y=10)
        
         self.listbox1.delete(first=0, last=tk.END)
         for idx, client in enumerate(ff.clientList):
@@ -92,7 +99,7 @@ class CSLManagerApp:
         
         if stat:
             label2 = tk.Label(self.master, text='총 ' + str(len(ff.clientList)) + '명 접속 중')
-            label2.place(x=350, y=10)
+            label2.place(x=400, y=10)
        
             self.listbox1.delete(first=0, last=tk.END)
             for idx, client in enumerate(ff.clientList):
@@ -102,6 +109,14 @@ class CSLManagerApp:
         T = threading.Timer(5, self.checkClientFunc)
         T.start()
 
+    def backupSelFunc(self):
+        answer = self.confirm(msg='해당 클라이언트 백업을 실행하시겠습니까?')
+
+        if answer:        
+            for ip in self.listbox1.curselection():
+                idx = ff.clientList.index(self.listbox1.get(ip))
+                ff.backupSel(ff.clientConnection[idx])
+                
     def backupAllFunc(self):
         answer = self.confirm(msg='클라이언트 전체 백업을 실행하시겠습니까?')
         if answer:
@@ -148,7 +163,7 @@ class CSLManagerApp:
 
     def cmdDicFunc(self):
         os.system('gedit /home/ubuntu/CSLManager/command.txt')
-        
+    
     def run(self):
         self.checkClientFunc()
         self.master.mainloop()
